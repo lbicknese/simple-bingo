@@ -227,7 +227,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="flex flex-col gap-0.5 items-center-safe flex-auto">
-      <div class="text-lg flex gap-1 items-center">
+      <!-- <div class="text-lg flex gap-1 items-center">
         <span>Room: {{ state.room }}</span>
         <button
           type="button"
@@ -245,7 +245,7 @@ onMounted(() => {
         >
           <span class="text-2xl/0">&plus;</span>
         </button>
-      </div>
+      </div> -->
       <div class="landscape:text-[6dvh]/tight portrait:text-[5dvw]/tight">Last Call</div>
       <div
         class="circle last"
