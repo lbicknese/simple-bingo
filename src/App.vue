@@ -47,6 +47,10 @@ function called(ball: Ball) {
 }
 
 function call() {
+  if (state.value.balls.length <= 0) {
+    return
+  }
+
   const ball = chance.pickone(state.value.balls)
   state.value = {
     calls: [ball, ...state.value.calls],
@@ -210,35 +214,35 @@ function reset() {
 
 @media (orientation: landscape) {
   .ball {
-    width: 10vh;
-    font-size: 5vh;
+    width: 10dvh;
+    font-size: 5dvh;
   }
 
   .last {
-    width: 20vw;
-    font-size: 10vw;
+    width: 20dvw;
+    font-size: 10dvw;
   }
 
   .previous {
-    width: 10vw;
-    font-size: 5vw;
+    width: 10dvw;
+    font-size: 5dvw;
   }
 }
 
 @media (orientation: portrait) {
   .ball {
-    width: 8vw;
-    font-size: 4vw;
+    width: 8dvw;
+    font-size: 4dvw;
   }
 
   .last {
-    width: 20vh;
-    font-size: 10vh;
+    width: 20dvh;
+    font-size: 10dvh;
   }
 
   .previous {
-    width: 10vh;
-    font-size: 5vh;
+    width: 10dvh;
+    font-size: 5dvh;
   }
 }
 </style>
