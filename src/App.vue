@@ -148,10 +148,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-1 h-[100vh] p-2">
+  <div class="flex flex-wrap gap-1 h-[100dvh] p-2">
     <div class="flex gap-0.5 portrait:flex-auto justify-between">
       <div>
-        <div class="text-center landscape:text-[5vh]/tight portrait:text-[4vw]/tight">B</div>
+        <div class="text-center landscape:text-[5dvh]/tight portrait:text-[4dvw]/tight">B</div>
         <div class="grid gap-0.5">
           <div
             v-for="ball in balls.filter((b) => b.key === 'B')"
@@ -166,7 +166,7 @@ onMounted(() => {
         </div>
       </div>
       <div>
-        <div class="text-center landscape:text-[5vh]/tight portrait:text-[4vw]/tight">I</div>
+        <div class="text-center landscape:text-[5dvh]/tight portrait:text-[4dvw]/tight">I</div>
         <div class="grid gap-0.5">
           <div
             v-for="ball in balls.filter((b) => b.key === 'I')"
@@ -181,7 +181,7 @@ onMounted(() => {
         </div>
       </div>
       <div>
-        <div class="text-center landscape:text-[6vh]/tight portrait:text-[5vw]/tight">N</div>
+        <div class="text-center landscape:text-[6dvh]/tight portrait:text-[5dvw]/tight">N</div>
         <div class="grid gap-0.5">
           <div
             v-for="ball in balls.filter((b) => b.key === 'N')"
@@ -196,7 +196,7 @@ onMounted(() => {
         </div>
       </div>
       <div>
-        <div class="text-center landscape:text-[6vh]/tight portrait:text-[5vw]/tight">G</div>
+        <div class="text-center landscape:text-[6dvh]/tight portrait:text-[5dvw]/tight">G</div>
         <div class="grid gap-0.5">
           <div
             v-for="ball in balls.filter((b) => b.key === 'G')"
@@ -211,7 +211,7 @@ onMounted(() => {
         </div>
       </div>
       <div>
-        <div class="text-center landscape:text-[6vh]/tight portrait:text-[5vw]/tight">O</div>
+        <div class="text-center landscape:text-[6dvh]/tight portrait:text-[5dvw]/tight">O</div>
         <div class="grid gap-0.5">
           <div
             v-for="ball in balls.filter((b) => b.key === 'O')"
