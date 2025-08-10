@@ -183,7 +183,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'B')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-red-400 opacity-40"
+            class="circle ball bg-red-400 opacity-20"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -198,7 +198,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'I')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-blue-400 opacity-40"
+            class="circle ball bg-blue-400 opacity-20"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -213,7 +213,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'N')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-amber-400 opacity-40"
+            class="circle ball bg-amber-400 opacity-20"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -228,7 +228,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'G')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-green-400 opacity-40"
+            class="circle ball bg-green-400 opacity-20"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -243,7 +243,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'O')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-purple-400 opacity-40"
+            class="circle ball bg-purple-400 opacity-20"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -308,7 +308,7 @@ onMounted(() => {
           </div>
         </TransitionGroup>
       </div>
-      <div class="text-xl">Calls: {{ state.calls.length }}</div>
+      <div class="text-2xl">Calls: {{ state.calls.length }}</div>
       <div class="flex-auto"></div>
       <div class="flex gap-1 w-full text-2xl">
         <button type="button" class="rounded bg-rose-500 px-4 py-1 cursor-pointer" @click="newGame">
