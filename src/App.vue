@@ -53,6 +53,7 @@ const state = useStorage<{ calls: Ball[]; balls: Ball[]; room: string | undefine
 })
 
 const joinRoomDialog = useTemplateRef<HTMLDialogElement>('joinRoomDialog')
+const confirmationDialog = useTemplateRef<HTMLDialogElement>('confirmationDialog')
 
 const newRoomName = ref<string>('')
 
@@ -77,8 +78,10 @@ function call() {
   // socket.send(JSON.stringify({ type: 'update', identifier, payload: state.value }))
 }
 
-function reset() {
-  if (window.confirm('Reset game? This will clear the board.')) {
+async function newGame() {
+  const result = await openConfirm('New Game', 'Start a new game? This will clear the board.')
+
+  if (result) {
     _reset()
     // socket.send(JSON.stringify({ type: 'update', identifier, payload: state.value }))
   }
@@ -122,6 +125,30 @@ function cancelJoinRoom() {
   joinRoomDialog.value?.close()
 }
 
+const confirmationPromise = { resolve: (value: boolean) => {}, reject: () => {} }
+const confirmationTitle = ref('')
+const confirmationMessage = ref('')
+
+function openConfirm(title: string, message: string) {
+  confirmationTitle.value = title
+  confirmationMessage.value = message
+  return new Promise((resolve, reject) => {
+    confirmationDialog.value?.showModal()
+    confirmationPromise.resolve = resolve
+    confirmationPromise.reject = reject
+  })
+}
+
+function confirm() {
+  confirmationPromise.resolve(true)
+  confirmationDialog.value?.close()
+}
+
+function cancel() {
+  confirmationPromise.resolve(false)
+  confirmationDialog.value?.close()
+}
+
 onMounted(() => {
   if (state.value.room === undefined || state.value.room.trim() === '') {
     state.value.room = chance.radio()
@@ -148,7 +175,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-1 h-[100dvh] p-2">
+  <div class="flex flex-wrap gap-1 h-[100dvh] p-2 pb-4">
     <div class="flex gap-0.5 portrait:flex-auto justify-between">
       <div>
         <div class="text-center landscape:text-[5dvh]/tight portrait:text-[4dvw]/tight">B</div>
@@ -156,7 +183,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'B')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-red-500 opacity-50"
+            class="circle ball bg-red-400 opacity-40"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -171,7 +198,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'I')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-blue-500 opacity-50"
+            class="circle ball bg-blue-400 opacity-40"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -186,7 +213,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'N')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-amber-500 opacity-50"
+            class="circle ball bg-amber-400 opacity-40"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -201,7 +228,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'G')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-green-500 opacity-50"
+            class="circle ball bg-green-400 opacity-40"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -216,7 +243,7 @@ onMounted(() => {
           <div
             v-for="ball in balls.filter((b) => b.key === 'O')"
             :key="`${ball.key}-${ball.value}`"
-            class="circle ball bg-purple-500 opacity-50"
+            class="circle ball bg-purple-400 opacity-40"
             :class="{
               'opacity-100': called(ball),
             }"
@@ -247,39 +274,45 @@ onMounted(() => {
         </button>
       </div> -->
       <div class="landscape:text-[6dvh]/tight portrait:text-[5dvw]/tight">Last Call</div>
-      <div
-        class="circle last"
-        :class="{
-          'bg-red-500': state.calls[0]?.key === 'B',
-          'bg-blue-500': state.calls[0]?.key === 'I',
-          'bg-amber-500': state.calls[0]?.key === 'N',
-          'bg-green-500': state.calls[0]?.key === 'G',
-          'bg-purple-500': state.calls[0]?.key === 'O',
-        }"
-      >
-        <span>{{ state.calls[0]?.key }}{{ state.calls[0]?.value }}</span>
-      </div>
-      <TransitionGroup class="flex gap-1" name="list" tag="div">
+      <div class="flex gap-0.5">
         <div
-          v-for="ball in state.calls.slice(1, 3)"
-          :key="`${ball.key}-${ball.value}`"
-          class="circle previous"
+          class="circle last"
           :class="{
-            'bg-red-500': ball.key === 'B',
-            'bg-blue-500': ball.key === 'I',
-            'bg-amber-500': ball.key === 'N',
-            'bg-green-500': ball.key === 'G',
-            'bg-purple-500': ball.key === 'O',
+            'bg-red-400': state.calls[0]?.key === 'B',
+            'bg-blue-400': state.calls[0]?.key === 'I',
+            'bg-amber-400': state.calls[0]?.key === 'N',
+            'bg-green-400': state.calls[0]?.key === 'G',
+            'bg-purple-400': state.calls[0]?.key === 'O',
           }"
         >
-          {{ ball.key }}{{ ball.value }}
+          <span>{{ state.calls[0]?.key }}{{ state.calls[0]?.value }}</span>
         </div>
-      </TransitionGroup>
+        <TransitionGroup
+          class="flex flex-col gap-1 portrait:h-[30dvh] landscape:h-[20dvh]"
+          name="list"
+          tag="div"
+        >
+          <div
+            v-for="ball in state.calls.slice(1, 3)"
+            :key="`${ball.key}-${ball.value}`"
+            class="circle previous"
+            :class="{
+              'bg-red-400': ball.key === 'B',
+              'bg-blue-400': ball.key === 'I',
+              'bg-amber-400': ball.key === 'N',
+              'bg-green-400': ball.key === 'G',
+              'bg-purple-400': ball.key === 'O',
+            }"
+          >
+            {{ ball.key }}{{ ball.value }}
+          </div>
+        </TransitionGroup>
+      </div>
       <div class="text-xl">Calls: {{ state.calls.length }}</div>
       <div class="flex-auto"></div>
       <div class="flex gap-1 w-full text-2xl">
-        <button type="button" class="rounded bg-rose-500 px-4 py-1 cursor-pointer" @click="reset">
-          Reset
+        <button type="button" class="rounded bg-rose-500 px-4 py-1 cursor-pointer" @click="newGame">
+          New
         </button>
         <button
           type="button"
@@ -312,6 +345,27 @@ onMounted(() => {
       </div>
     </div>
   </dialog>
+  <dialog ref="confirmationDialog" class="fixed m-auto rounded p-2">
+    <h2 class="font-bold">{{ confirmationTitle }}</h2>
+    <p class="py-2 text-xl">{{ confirmationMessage }}</p>
+    <div class="flex justify-between">
+      <button
+        type="button"
+        autofocus
+        class="bg-gray-200 px-2 rounded text-xl cursor-pointer"
+        @click="cancel"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="bg-emerald-400 px-2 rounded text-xl cursor-pointer"
+        @click="confirm"
+      >
+        Confirm
+      </button>
+    </div>
+  </dialog>
 </template>
 
 <style scoped>
@@ -341,16 +395,19 @@ onMounted(() => {
 @media (orientation: landscape) {
   .ball {
     width: 10dvh;
+    height: 10dvh;
     font-size: 5dvh;
   }
 
   .last {
     width: 20dvw;
+    height: 20dvw;
     font-size: 10dvw;
   }
 
   .previous {
     width: 8dvw;
+    height: 8dvw;
     font-size: 4dvw;
   }
 }
@@ -358,36 +415,34 @@ onMounted(() => {
 @media (orientation: portrait) {
   .ball {
     width: 8dvw;
+    height: 8dvw;
     font-size: 4dvw;
   }
 
   .last {
-    width: 20dvh;
-    font-size: 10dvh;
+    width: 25dvh;
+    height: 25dvh;
+    font-size: 12dvh;
   }
 
   .previous {
     width: 10dvh;
+    height: 10dvh;
     font-size: 5dvh;
   }
 }
 
-.list-enter-active.list-leave-active {
-  transition: all 0.6s ease-out;
-}
+.list-enter-active.list-leave-active,
 .list-leave-active {
   transition: all 0.6s ease-out;
 }
 .list-enter-from {
   opacity: 0;
-  transform: translateY(-30px);
+  transform: translateX(-30px);
 }
 
 .list-leave-to {
   opacity: 0;
-  width: 0;
-  overflow: hidden;
-  transform: translateX(30px);
 }
 
 #joinRoomDialog {
