@@ -175,7 +175,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-1 h-[100dvh] p-2 pb-4">
+  <div class="flex flex-wrap gap-1 h-[100dvh] p-2 pb-3">
     <div class="flex gap-0.5 portrait:flex-auto justify-between">
       <div>
         <div class="text-center landscape:text-[5dvh]/tight portrait:text-[4dvw]/tight">B</div>
